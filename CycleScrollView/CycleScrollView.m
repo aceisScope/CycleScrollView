@@ -35,13 +35,14 @@
         pageViews = [NSMutableArray array];
         
         self.backgroundColor = [UIColor underPageBackgroundColor];
+        self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"type_background.png"]];
         
         cycleScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 44)];
         cycleScrollView.delegate = self;
         cycleScrollView.showsHorizontalScrollIndicator = NO;
         [self addSubview:cycleScrollView];
         
-        for (int i = 0; i < 10; i ++)
+        for (int i = 0; i < [items count]; i ++)
         {
             UILabel *pageLabel = [[UILabel alloc] initWithFrame:CGRectMake(ITEM_WIDTH*i, 0, ITEM_WIDTH, 44)];
             pageLabel.textAlignment = NSTextAlignmentCenter;

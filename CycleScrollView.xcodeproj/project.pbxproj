@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		80322CAF164119990001CF45 /* CycleScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80322CAE164119990001CF45 /* CycleScrollView.m */; };
+		804CB1491642719100AB3598 /* type_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 804CB1481642719100AB3598 /* type_background@2x.png */; };
 		80B7C66A163FC8D5007A0A53 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80B7C669163FC8D5007A0A53 /* UIKit.framework */; };
 		80B7C66C163FC8D5007A0A53 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80B7C66B163FC8D5007A0A53 /* Foundation.framework */; };
 		80B7C66E163FC8D5007A0A53 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80B7C66D163FC8D5007A0A53 /* CoreGraphics.framework */; };
@@ -24,6 +25,7 @@
 /* Begin PBXFileReference section */
 		80322CAD164119990001CF45 /* CycleScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CycleScrollView.h; sourceTree = "<group>"; };
 		80322CAE164119990001CF45 /* CycleScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CycleScrollView.m; sourceTree = "<group>"; };
+		804CB1481642719100AB3598 /* type_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "type_background@2x.png"; sourceTree = "<group>"; };
 		80B7C665163FC8D5007A0A53 /* CycleScrollView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CycleScrollView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		80B7C669163FC8D5007A0A53 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		80B7C66B163FC8D5007A0A53 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -94,6 +96,7 @@
 				80B7C670163FC8D5007A0A53 /* Supporting Files */,
 				80322CAD164119990001CF45 /* CycleScrollView.h */,
 				80322CAE164119990001CF45 /* CycleScrollView.m */,
+				804CB1481642719100AB3598 /* type_background@2x.png */,
 			);
 			path = CycleScrollView;
 			sourceTree = "<group>";
@@ -168,6 +171,7 @@
 				80B7C67E163FC8D5007A0A53 /* Default@2x.png in Resources */,
 				80B7C680163FC8D5007A0A53 /* Default-568h@2x.png in Resources */,
 				80B7C686163FC8D5007A0A53 /* ViewController.xib in Resources */,
+				804CB1491642719100AB3598 /* type_background@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
