@@ -21,5 +21,6 @@
 
 - (id)initWithItems:(NSArray*)items andFrame:(CGRect)frame;
 - (NSInteger)currentPage;
+- (void)setIndex:(NSInteger)index;
 
 @end

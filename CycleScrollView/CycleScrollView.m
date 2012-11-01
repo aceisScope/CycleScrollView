@@ -94,6 +94,24 @@
     return currentIndex;
 }
 
+- (void)setIndex:(NSInteger)index
+{
+    NSInteger length = abs(index - currentIndex);
+    if (index > currentIndex)
+    {
+        for (int i = 1; i <= length ; i++)
+        {
+            [cycleScrollView scrollRectToVisible:CGRectMake(1.5*ITEM_WIDTH + ITEM_WIDTH,0,cycleScrollView.frame.size.width,cycleScrollView.frame.size.height) animated:NO];
+        }
+    }
+    else if (index <= currentIndex)
+    {
+        for (int i = 1; i <= length ; i++)
+        {
+            [cycleScrollView scrollRectToVisible:CGRectMake(1.5*ITEM_WIDTH - ITEM_WIDTH,0,cycleScrollView.frame.size.width,cycleScrollView.frame.size.height) animated:NO];
+        }
+    }
+}
 
 #pragma mark- UIScrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)_scrollView
