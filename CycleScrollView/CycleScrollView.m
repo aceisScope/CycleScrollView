@@ -119,6 +119,8 @@
 {
     if (_scrollView.contentOffset.x >= 2.0*ITEM_WIDTH)
     {
+        float length = _scrollView.contentOffset.x - 2.0*ITEM_WIDTH;
+        
         [self loadPageWithContent:currentIndex atIndex:0];
         
         currentIndex = (currentIndex >= [pageTitles count]-1) ? 0 : currentIndex + 1;
@@ -131,14 +133,17 @@
             [self loadPageWithContent:nextIndex atIndex:i];
         }
         
-        [cycleScrollView scrollRectToVisible:CGRectMake(1.5*ITEM_WIDTH,0,cycleScrollView.frame.size.width,cycleScrollView.frame.size.height) animated:NO];
+        [cycleScrollView scrollRectToVisible:CGRectMake(1.5*ITEM_WIDTH+length,0,cycleScrollView.frame.size.width,cycleScrollView.frame.size.height) animated:NO];
     }
     if (_scrollView.contentOffset.x <= 1.0*ITEM_WIDTH)
     {
+        float length = 1.0*ITEM_WIDTH - _scrollView.contentOffset.x;
+        
         currentIndex = (currentIndex == 0) ? [pageTitles count]-1 : currentIndex - 1;
         [self loadPageWithContent:currentIndex atIndex:1];
         
-        prevIndex = (prevIndex == 0) ? [pageTitles count]-1 : prevIndex - 1;
+        prevIndex = currentIndex - 1;
+        prevIndex = (prevIndex <= 0) ? [pageTitles count]-1 : prevIndex - 1;
         [self loadPageWithContent:prevIndex atIndex:0];
         
         nextIndex = currentIndex;
@@ -149,7 +154,7 @@
         }
         
         
-        [cycleScrollView scrollRectToVisible:CGRectMake(1.5*ITEM_WIDTH,0,cycleScrollView.frame.size.width,cycleScrollView.frame.size.height) animated:NO];
+        [cycleScrollView scrollRectToVisible:CGRectMake(1.5*ITEM_WIDTH - length,0,cycleScrollView.frame.size.width,cycleScrollView.frame.size.height) animated:NO];
     }
 }
 
