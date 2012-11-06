@@ -15,6 +15,9 @@
 	int currentIndex;
 	int nextIndex;
     
+    int first;
+    int last;
+    
     NSMutableArray *pageViews;
     NSMutableArray *pageTitles;
 }

@@ -42,7 +42,7 @@
         cycleScrollView.showsHorizontalScrollIndicator = NO;
         [self addSubview:cycleScrollView];
         
-        for (int i = 0; i < [items count]; i ++)
+        for (int i = 0; i < ITEM_COUNT + 2; i ++)
         {
             UILabel *pageLabel = [[UILabel alloc] initWithFrame:CGRectMake(ITEM_WIDTH*i, 0, ITEM_WIDTH, 44)];
             pageLabel.textAlignment = NSTextAlignmentCenter;
@@ -63,6 +63,9 @@
         {
             [self loadPageWithContent:i atIndex:i+1];
         }
+        
+        first = 0;
+        last = ITEM_COUNT + 1;
 
     }
     return self;
@@ -79,6 +82,7 @@
 
 - (void)loadPageWithContent:(int)index atIndex:(int)page
 {
+    ((UILabel*)pageViews[page]).tag = index;
     ((UILabel*)pageViews[page]).text = pageTitles[index];
     if (index ==  (currentIndex + 2)%[pageTitles count])
     {
@@ -114,48 +118,60 @@
     }
 }
 
+- (void)clearColorForCurrentPage
+{
+    int page = (first + ITEM_COUNT/2 +1)%[pageViews count];
+    ((UILabel*)pageViews[page]).textColor = [UIColor blackColor];
+}
+
+- (void)setColorForCurrentPage
+{
+    int page = (first + ITEM_COUNT/2 +1)%[pageViews count];
+    ((UILabel*)pageViews[page]).textColor = [UIColor colorWithRed:44./256 green:94./256 blue:22./256 alpha:1];
+}
+
 #pragma mark- UIScrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)_scrollView
 {
     if (_scrollView.contentOffset.x >= 2.0*ITEM_WIDTH)
     {
-        float length = _scrollView.contentOffset.x - 2.0*ITEM_WIDTH;
+        [self clearColorForCurrentPage];
         
-        [self loadPageWithContent:currentIndex atIndex:0];
+        [self loadPageWithContent:((UILabel*)pageViews[last]).tag == [pageTitles count]-1 ? 0:((UILabel*)pageViews[last]).tag+1 atIndex:first];
+        [(UILabel*)pageViews[first] setFrame:CGRectMake(((UILabel*)pageViews[last]).frame.origin.x , 0, ITEM_WIDTH, 44)];
+        last = first;
+        first = first == [pageViews count]-1?0:first+1;
         
         currentIndex = (currentIndex >= [pageTitles count]-1) ? 0 : currentIndex + 1;
-        [self loadPageWithContent:currentIndex atIndex:1];
         
-        nextIndex = currentIndex;
-        for (int i = 2; i < ITEM_COUNT + 2; i ++)
+        for (int i = 0; i <= ITEM_COUNT; i ++)
         {
-            nextIndex = (nextIndex+1 >= [pageTitles count]) ? 0 : nextIndex + 1;
-            [self loadPageWithContent:nextIndex atIndex:i];
+            [(UILabel*)pageViews[(i+first)%[pageViews count]] setFrame:CGRectMake(i*ITEM_WIDTH, 0, ITEM_WIDTH, 44)];
         }
         
-        [cycleScrollView scrollRectToVisible:CGRectMake(1.5*ITEM_WIDTH+length,0,cycleScrollView.frame.size.width,cycleScrollView.frame.size.height) animated:NO];
+        [self setColorForCurrentPage];
+        
+        [cycleScrollView scrollRectToVisible:CGRectMake(1.5*ITEM_WIDTH,0,cycleScrollView.frame.size.width,cycleScrollView.frame.size.height) animated:NO];
     }
     if (_scrollView.contentOffset.x <= 1.0*ITEM_WIDTH)
     {
-        float length = 1.0*ITEM_WIDTH - _scrollView.contentOffset.x;
+        [self clearColorForCurrentPage];
+        
+        [self loadPageWithContent:((UILabel*)pageViews[first]).tag == 0 ? pageTitles.count -1 :((UILabel*)pageViews[first]).tag - 1 atIndex:last];
+        [(UILabel*)pageViews[last] setFrame:CGRectMake(((UILabel*)pageViews[first]).frame.origin.x, 0, ITEM_WIDTH, 44)];
+        first = last;
+        last = last == 0? [pageViews count] - 1:last -1;
         
         currentIndex = (currentIndex == 0) ? [pageTitles count]-1 : currentIndex - 1;
-        [self loadPageWithContent:currentIndex atIndex:1];
         
-        prevIndex = currentIndex - 1;
-        prevIndex = (prevIndex <= 0) ? [pageTitles count]-1 : prevIndex - 1;
-        [self loadPageWithContent:prevIndex atIndex:0];
-        
-        nextIndex = currentIndex;
-        for (int i = 2; i < ITEM_COUNT + 2; i ++)
+        for (int i = 1; i <= ITEM_COUNT+1; i ++)
         {
-            nextIndex = (nextIndex+1 >= [pageTitles count]) ? 0 : nextIndex + 1;
-            [self loadPageWithContent:nextIndex atIndex:i];
+            [(UILabel*)pageViews[(i+first)%[pageViews count]] setFrame:CGRectMake(i*ITEM_WIDTH, 0, ITEM_WIDTH, 44)];
         }
         
+        [self setColorForCurrentPage];
         
-        [cycleScrollView scrollRectToVisible:CGRectMake(1.5*ITEM_WIDTH - length,0,cycleScrollView.frame.size.width,cycleScrollView.frame.size.height) animated:NO];
-    }
+        [cycleScrollView scrollRectToVisible:CGRectMake(1.5*ITEM_WIDTH,0,cycleScrollView.frame.size.width,cycleScrollView.frame.size.height) animated:NO];    }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
