@@ -8,6 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@class CycleScrollView;
+
+@protocol CycleScrollViewDelegate <NSObject>
+
+- (void)willBeginToScroll:(CycleScrollView*)scrollview;
+- (void)scrollToIndex:(int)index;
+
+@end
+
 @interface CycleScrollView : UIView
 {
     UIScrollView *cycleScrollView;
@@ -22,6 +31,7 @@
     NSMutableArray *pageTitles;
 }
 
+@property (nonatomic,weak) id<CycleScrollViewDelegate>delegate;
 - (id)initWithItems:(NSArray*)items andFrame:(CGRect)frame;
 - (NSInteger)currentPage;
 - (void)setIndex:(NSInteger)index;

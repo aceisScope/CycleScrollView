@@ -8,6 +8,7 @@
 
 #import "CycleScrollView.h"
 
+#warning ITEM_COUNT MUST BE AN ODD NUMBER
 #define ITEM_COUNT 5
 #define ITEM_WIDTH 320/(ITEM_COUNT-1)
 
@@ -66,6 +67,9 @@
         
         first = 0;
         last = ITEM_COUNT + 1;
+        
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+        [self addGestureRecognizer:tapGesture];
 
     }
     return self;
@@ -116,6 +120,7 @@
             [cycleScrollView scrollRectToVisible:CGRectMake(1.5*ITEM_WIDTH - ITEM_WIDTH,0,cycleScrollView.frame.size.width,cycleScrollView.frame.size.height) animated:NO];
         }
     }
+    
 }
 
 - (void)clearColorForCurrentPage
@@ -174,20 +179,60 @@
         [cycleScrollView scrollRectToVisible:CGRectMake(1.5*ITEM_WIDTH,0,cycleScrollView.frame.size.width,cycleScrollView.frame.size.height) animated:NO];    }
 }
 
+- (void)handleTap:(UITapGestureRecognizer*)sender
+{
+    CGPoint point = [sender locationInView:self];
+    
+    int m = ITEM_COUNT - 2;
+    int position = (int)point.x/(ITEM_WIDTH/2);
+    
+    if (position == m || position == m+1) return;
+    else if (position < m)
+    {
+        [self setIndex:currentIndex - (m+(position%2 == 0)-position)/2];
+    }
+    else if (position > m+1)
+    {
+        [self setIndex:currentIndex + (position - (m + (position%2 == 0)))/2];
+    }
+            
+}
+
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    
+    if ([self.delegate respondsToSelector:@selector(scrollToIndex:)])
+    {
+        [self.delegate scrollToIndex:[self currentPage]];
+    }
 }
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
-    NSLog(@"current page %d",[self currentPage]);
+    if ([self.delegate respondsToSelector:@selector(scrollToIndex:)])
+    {
+        [self.delegate scrollToIndex:[self currentPage]];
+    }
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{    
-    [cycleScrollView scrollRectToVisible:CGRectMake(round((float)scrollView.contentOffset.x/(ITEM_WIDTH/2))*(ITEM_WIDTH/2),0,cycleScrollView.frame.size.width,cycleScrollView.frame.size.height) animated:YES];
+{
+    //NSLog(@"current page DidEndDragging %d",[self currentPage]);
+    
+    float length = round((float)scrollView.contentOffset.x/(ITEM_WIDTH/2));
+    if (length == 2.0) length = 3;
+    if (length == 4.0) length = 5;
+    [cycleScrollView scrollRectToVisible:CGRectMake(length*(ITEM_WIDTH/2),0,cycleScrollView.frame.size.width,cycleScrollView.frame.size.height) animated:YES];
 }
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    //NSLog(@"will beging dragging");
+    if ([self.delegate respondsToSelector:@selector(willBeginToScroll:)])
+    {
+        [self.delegate willBeginToScroll:self];
+    }
+}
+
 
 
 @end
